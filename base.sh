@@ -1,6 +1,6 @@
 if [ ! -e "/usr/bin/lxc-create" ]; then
     apt-get update
-    apt-get install lxc
+    apt-get install -qqy lxc
 fi
 
 echo "lxc.aa_profile = unconfined" >> /etc/lxc/default.conf
