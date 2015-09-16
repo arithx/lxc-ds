@@ -8,5 +8,7 @@ echo "lxc.cgroup.devices.allow = c 10:237 rwm #loop-control" >> /etc/lxc/default
 echo "lxc.cgroup.devices.allow = b 7:* rwm # loop*" >> /etc/lxc/default.conf
 lxc-create -t ubuntu -n ds
 lxc-start -n ds -d
-lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo apt-get update -qqy wget"
-lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo wget -O - https://raw.github.com/arithx/shstack/master/base.sh | sh"
+lxc-wait -n ds -s RUNNING
+lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S apt-get update --fix-missing"
+lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S apt-get install -qqy wget"
+lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S wget -O - https://raw.github.com/arithx/shstack/master/base.sh | sh"
