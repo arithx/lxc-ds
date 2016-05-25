@@ -6,7 +6,7 @@ fi
 echo "lxc.aa_profile = unconfined" >> /etc/lxc/default.conf
 echo "lxc.cgroup.devices.allow = c 10:237 rwm #loop-control" >> /etc/lxc/default.conf
 echo "lxc.cgroup.devices.allow = b 7:* rwm # loop*" >> /etc/lxc/default.conf
-lxc-create -t ubuntu -n ds
+lxc-create -t ubuntu -r xenial -n ds
 lxc-start -n ds -d
 lxc-wait -n ds -s RUNNING
 
