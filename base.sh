@@ -3,9 +3,18 @@ if [ ! -e "/usr/bin/lxc-create" ]; then
     apt-get install -qqy lxc
 fi
 
-echo "lxc.aa_profile = unconfined" >> /etc/lxc/default.conf
-echo "lxc.cgroup.devices.allow = c 10:237 rwm #loop-control" >> /etc/lxc/default.conf
-echo "lxc.cgroup.devices.allow = b 7:* rwm # loop*" >> /etc/lxc/default.conf
+if [ -z "$(cat /etc/lxc/default.conf | grep lxc.aa_profile)" ]; then
+    echo "lxc.aa_profile = unconfined" >> /etc/lxc/default.conf
+fi
+
+if [ -z "$(cat /etc/lxc/default.conf | grep \#loop-control)" ]; then
+    echo "lxc.cgroup.devices.allow = c 10:237 rwm #loop-control" >> /etc/lxc/default.conf
+fi
+
+if [ -z "$(cat /etc/lxc/default.conf | grep loop*)" ]; then
+    echo "lxc.cgroup.devices.allow = b 7:* rwm # loop*" >> /etc/lxc/default.conf
+fi
+
 lxc-create -t ubuntu -n ds
 lxc-start -n ds -d
 lxc-wait -n ds -s RUNNING
