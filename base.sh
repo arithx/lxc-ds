@@ -16,4 +16,4 @@ sleep 5
 lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S apt-get update --fix-missing"
 lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S apt-get install -qqy wget"
 lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S wget -O - https://raw.github.com/arithx/shstack/master/base.sh | sh"
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT -to $(lxc-info -n ds -iH | egrep -v "192.")
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination $(lxc-info -n ds -iH | egrep -v "192.")
