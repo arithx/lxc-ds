@@ -16,6 +16,8 @@ if [ -z "$(cat /etc/lxc/default.conf | grep loop*)" ]; then
 fi
 
 lxc-create -t ubuntu -n ds
+lxc-cgroup -n ds devices.allow "c 10:237 rwm"
+lxc-cgroup -n ds devices.allow "b 7:* rwm"
 mknod /var/lib/lxc/ds/rootfs/dev/loop-control c 10 237
 lxc-start -n ds -d
 lxc-wait -n ds -s RUNNING
