@@ -22,6 +22,7 @@ lxc-wait -n ds -s RUNNING
 # For whatever reason the LXC container can have network issues immediately after setting to running state
 sleep 5
 
+lxc-attach -n ds -- bash -c "echo \"deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
 lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S apt-get update --fix-missing"
 lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S apt-get install -qqy wget"
 lxc-attach -n ds -- bash -c "echo \"ubuntu\" | sudo -S wget -O - https://raw.github.com/arithx/shstack/master/base.sh | sh"
