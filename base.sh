@@ -16,13 +16,16 @@ if [ -z "$(cat /etc/lxc/default.conf | grep loop*)" ]; then
 fi
 
 lxc-create -t ubuntu -n ds
-lxc-cgroup -n ds devices.allow "c 10:237 rwm"
-lxc-cgroup -n ds devices.allow "b 7:* rwm"
 mknod /var/lib/lxc/ds/rootfs/dev/loop-control c 10 237
 lxc-start -n ds -d
 lxc-wait -n ds -s RUNNING
 
 # For whatever reason the LXC container can have network issues immediately after setting to running state
+sleep 5
+
+# Set cgroups manually
+lxc-cgroup -n ds devices.allow "c 10:237 rwm"
+lxc-cgroup -n ds devices.allow "b 7:* rwm"
 sleep 5
 
 lxc-attach -n ds -- bash -c "echo \"deb http://archive.ubuntu.com/ubuntu trusty-backports main restricted universe multiverse\" >> /etc/apt/sources.list"
